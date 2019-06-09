@@ -74,7 +74,7 @@ delay(500);
     Serial.println("certificate doesn't match");
   }
 
-  String url = "/horizons_batch.cgi?batch=1&TABLE_TYPE=OBSERVER&QUANTITIES='4'&COMMAND=\"301\"&SOLAR_ELONG=\"0,180\"&LHA_CUTOFF=0&CSV_FORMAT=YES&CAL_FORMAT=JD&ANG_FORMAT=DEG&APPARENT=REFRACTED&REF_SYSTEM=J2000&CENTER=coord@399&COORD_TYPE=GEODETIC&SITE_COORD='-44.016950,-19.875750,0.818000'&TLIST=2458644.36954&SKIP_DAYLT=NO";
+  String url = "/horizons_batch.cgi?batch=1&TABLE_TYPE=OBSERVER&QUANTITIES='4'&COMMAND=\"301\"&SOLAR_ELONG=\"0,180\"&LHA_CUTOFF=0&CSV_FORMAT=YES&CAL_FORMAT=CAL&ANG_FORMAT=DEG&APPARENT=REFRACTED&REF_SYSTEM=J2000&CENTER=coord@399&COORD_TYPE=GEODETIC&SITE_COORD='-44.016950,-19.875750,0.818000'&TLIST=2458644.36954&SKIP_DAYLT=NO";
   Serial.print("requesting URL: ");
   Serial.println(url);
 
@@ -99,10 +99,13 @@ delay(500);
   Serial.println("reply was:");
   Serial.println("==========");
   String line;
-  while(client.available()){        
+  while(client.available() && line != "$$SOE"){        
     line = client.readStringUntil('\n');  //Read Line by Line
-    Serial.println(line); //Print response
+    //Serial.println(line); //Print response
   }
+  line = client.readStringUntil('\n');  //Read Line by Line
+  client.stop();
+  Serial.println(line);
   Serial.println("==========");
   Serial.println("closing connection");
 }

@@ -1,8 +1,8 @@
 #include "libs/AccelStepper.h"
 
 // Define some steppers and the pins the will use
-AccelStepper stepper1(5, D0, D1, D2, D3);
-AccelStepper stepper2(5, D5, D6, D7, D8);
+AccelStepper elevation(5, D0, D1, D2, D3);
+AccelStepper azimuth(5, D5, D6, D7, D8);
 
 void setup(){
   pinMode(D0, OUTPUT);
@@ -14,21 +14,23 @@ void setup(){
   pinMode(D7, OUTPUT);
   pinMode(D8, OUTPUT);
   
-  stepper1.setMaxSpeed(900.0);
-  stepper1.setAcceleration(700.0);
+  azimuth.setMaxSpeed(900.0);
+  azimuth.setAcceleration(700.0);
   
-  stepper2.setMaxSpeed(900.0);
-  stepper2.setAcceleration(700.0);
+  elevation.setMaxSpeed(900.0);
+  elevation.setAcceleration(700.0);
+
+  
 }
 
 void loop(){    
-  if (stepper1.distanceToGo() == 0){
-    stepper1.moveTo(random(-2048, 2048));//just an easy way to get the motors to move to random positions
+  if (azimuth.distanceToGo() == 0){
+    azimuth.moveTo(random(-2048, 2048));
   } 
-  stepper1.run();
+  azimuth.run();
 
-  if (stepper2.distanceToGo() == 0){
-    stepper2.moveTo(random(-2048, 2048));//just an easy way to get the motors to move to random positions
+  if (elevation.distanceToGo() == 0){
+    elevation.moveTo(random(-2048, 2048));
   } 
-  stepper2.run();
+  elevation.run();
 }
