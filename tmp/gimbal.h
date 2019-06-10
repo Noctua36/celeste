@@ -24,12 +24,14 @@ class Gimbal {
         elevation = AccelStepper(5, ele_pin1, ele_pin2, ele_pin3, ele_pin4);
         azimuth = AccelStepper(5, azi_pin1, azi_pin2, azi_pin3, azi_pin4);
        
-        azimuth.setMaxSpeed(900.0);
-        azimuth.setAcceleration(1000.0);
+        azimuth.setMaxSpeed(maxSpeed);
+        azimuth.setAcceleration(acc);
           
-        elevation.setMaxSpeed(900.0);
-        elevation.setAcceleration(1000.0);
-
+        elevation.setMaxSpeed(maxSpeed);
+        elevation.setAcceleration(acc);
+        
+        // elevationTargetPosition = 0;
+        // azimuthTargetPosition = 0;
     };
     void run();
     void moveUp(uint deg);
@@ -43,8 +45,8 @@ class Gimbal {
   private:
     AccelStepper elevation;
     AccelStepper azimuth;
-    long elevationTargetPosition;
-    long azimuthTargetPosition;
+    // long elevationTargetPosition;
+    // long azimuthTargetPosition;
 };
 
 #endif /* GIMBAL_H */

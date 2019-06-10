@@ -17,7 +17,7 @@ void ntpInit() {
 }
 
 // returns epoch format
-unsigned long getCurrentTime() {
+double getCurrentTime() {
   // get a random server from the pool
   WiFi.hostByName(ntpServerName, timeServerIP);
   sendNTPpacket(timeServerIP); // send an NTP packet to a time server

@@ -1,5 +1,8 @@
 #include "AccelStepper.h"
 
+#define STEPS_PER_DEGREE 11.3777777777
+
+
 String cmd;
 
 boolean newData = false;
@@ -27,22 +30,16 @@ void setup(){
   
 }
 
-long elevationTargetPosition;
-long azimuthTargetPosition;
-
 void loop(){
   while (Serial.available() > 0 ){
     cmd = Serial.readString();
   }
   
-  elevationTargetPosition = elevation.targetPosition();
-  azimuthTargetPosition = azimuth.targetPosition();
-  
   for (int i=0;i<cmd.length();i++) {
-    if (cmd[i]=='u') elevationTargetPosition += 56.88889;
-    else if (cmd[i]=='d') elevationTargetPosition -=56.88889;
-    else if (cmd[i]=='r') azimuthTargetPosition +=56.88889;
-    else if (cmd[i]=='l') azimuthTargetPosition -=56.88889;
+    if (cmd[i]=='u') elevation.move(5*STEPS_PER_DEGREE);
+    else if (cmd[i]=='d') elevation.move(-5*STEPS_PER_DEGREE);
+    else if (cmd[i]=='r') azimuth.move(5*STEPS_PER_DEGREE);
+    else if (cmd[i]=='l') azimuth.move(-5*STEPS_PER_DEGREE);
     else if (cmd[i]=='x') {
       azimuth.setCurrentPosition(0);
       elevation.setCurrentPosition(0);
@@ -51,8 +48,6 @@ void loop(){
 
     }
   }
-  elevation.moveTo(elevationTargetPosition);
-  azimuth.moveTo(azimuthTargetPosition);
   cmd = "";
   while (elevation.distanceToGo()!=0 || azimuth.distanceToGo()!=0) {
     elevation.run();

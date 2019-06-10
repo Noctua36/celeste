@@ -15,4 +15,4 @@ typedef struct {
 
 position getAzimuthAndElevation(String id, float julianDate);
 
-#endif /* NTP_H */
+#endif /* HORIZONS_H */
