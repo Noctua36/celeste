@@ -4,6 +4,8 @@
 #include "Arduino.h"
 #include "AccelStepper.h"
 
+#define STEPS_PER_DEGREE 11.3777777777
+
 class Gimbal {
   public:
     Gimbal(uint ele_pin1, uint ele_pin2, uint ele_pin3, uint ele_pin4,
@@ -29,6 +31,14 @@ class Gimbal {
         elevation.setAcceleration(1000.0);
 
     };
+    void run();
+    void moveUp(uint deg);
+    void moveDown(uint deg);
+    void moveRight(uint deg);
+    void moveLeft(uint deg);
+    void azimuthTo(uint deg);
+    void elevationTo(uint deg);
+    void setOrigin();
   
   private:
     AccelStepper elevation;
