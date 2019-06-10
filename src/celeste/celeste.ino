@@ -21,7 +21,7 @@ AccelStepper azimuth(5, D5, D6, D7, D8);
 const char* ssid = STASSID;
 const char* password = STAPSK;
 
-double startupTime;
+unsigned long startupTime;
 long startupMillis;
 
 void connectWiFi() {
@@ -92,16 +92,16 @@ void loop() {
       isCommand = true;
       switch (cmd[i]) {
         case 'u':
-          elevationTarget-=5*STEPS_PER_DEGREE;
-          break;
-        case 'U':
-          elevationTarget-=30*STEPS_PER_DEGREE;
-          break;
-        case 'd':
           elevationTarget+=5*STEPS_PER_DEGREE;
           break;
-        case 'D':
+        case 'U':
           elevationTarget+=30*STEPS_PER_DEGREE;
+          break;
+        case 'd':
+          elevationTarget-=5*STEPS_PER_DEGREE;
+          break;
+        case 'D':
+          elevationTarget-=30*STEPS_PER_DEGREE;
           break;
         case 'r':
           azimuthTarget+=5*STEPS_PER_DEGREE;
@@ -129,9 +129,11 @@ void loop() {
     }
   
     if (!isCommand) {
-      long jdNow = (float)epochToJulian((float)(millis()-startupMillis)/1000+startupTime);
+      
+      double epochNow = ((double)(millis()-startupMillis))/1000+startupTime;
+      double jdNow = epochToJulian(epochNow);
       target = getAzimuthAndElevation(cmd, jdNow);
-      if (target.azimuth>180) target.azimuth-=360;
+      //if (target.azimuth>180) target.azimuth-=360;
       azimuth.moveTo(target.azimuth*STEPS_PER_DEGREE);
       elevation.moveTo(-target.elevation*STEPS_PER_DEGREE);
       Serial.print("Moving to azimuth ");
@@ -141,7 +143,7 @@ void loop() {
     }
     else {
       azimuth.move(azimuthTarget);
-      elevation.move(elevationTarget);
+      elevation.move(-elevationTarget);
 //    elevation.setCurrentPosition(0);
 //    azimuth.setCurrentPosition(0);
     }

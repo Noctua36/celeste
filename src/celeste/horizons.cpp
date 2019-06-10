@@ -8,7 +8,7 @@ const char fingerprint[] PROGMEM = "C6 5D 37 E8 98 69 12 6A 0B 85 B4 53 A9 4B C9
 
 WiFiClientSecure client;
 
-position getAzimuthAndElevation(String id, float julianDate) {
+position getAzimuthAndElevation(String id, double julianDate) {
   position pos;
   pos.azimuth = 0;
   pos.elevation = 0;

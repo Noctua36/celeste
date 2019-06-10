@@ -8,6 +8,6 @@
 void ntpInit();
 unsigned long getCurrentTime();
 void sendNTPpacket(IPAddress& address);
-double epochToJulian(long epoch);
+double epochToJulian(double epoch);
 
 #endif /* NTP_H */
