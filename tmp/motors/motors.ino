@@ -28,6 +28,7 @@ void setup(){
 }
 
 long elevationTargetPosition;
+long azimuthTargetPosition;
 
 void loop(){
   while (Serial.available() > 0 ){
@@ -35,14 +36,20 @@ void loop(){
   }
   
   elevationTargetPosition = elevation.targetPosition();
+  azimuthTargetPosition = azimuth.targetPosition();
+  
   for (int i=0;i<cmd.length();i++) {Serial.println(7);
-    if (cmd[i]=='u') elevationTargetPosition +=56.88889;
+    if (cmd[i]=='u') elevationTargetPosition += 56.88889;
     else if (cmd[i]=='d') elevationTargetPosition -=56.88889;
+    else if (cmd[i]=='r') azimuthTargetPosition +=56.88889;
+    else if (cmd[i]=='l') azimuthTargetPosition -=56.88889;
   }
   elevation.moveTo(elevationTargetPosition);
+  azimuth.moveTo(azimuthTargetPosition);
   cmd = "";
-  while (elevation.distanceToGo()!=0) {
+  while (elevation.distanceToGo()!=0 || azimuth.distanceToGo()!=0) {
     elevation.run();
+    azimuth.run();
   }
 
   
