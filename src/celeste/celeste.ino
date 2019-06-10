@@ -147,9 +147,6 @@ void setup() {
   delay(100);
   
   
-  
-  
-  
   /*Serial.print("connecting to ");
   Serial.println(host);
 
