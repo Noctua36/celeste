@@ -66,113 +66,42 @@ void loop() {
   while (Serial.available() > 0 ){
     cmd = Serial.readString();
   }
-  
-  for (int i=0;i<cmd.length();i++) {
-    isCommand = true;
-    switch (cmd[i]) {
-      case 'u':
-        gimbal.moveUp(5);
-        break;
-      case 'd':
-        gimbal.moveDown(5);
-        break;
-      case 'r':
-        gimbal.moveRight(5);
-        break;
-      case 'l':
-        gimbal.moveLeft(5);
-        break;
-      case 'x':
-        gimbal.setOrigin();
-        break;
-      default:
-        isCommand = false;
-    }
-    if (!isCommand) break;
-  }
 
-  if (!isCommand) {
-    long jdNow = (float)epochToJulian((float)(millis()-startupMillis)/1000+startupTime);
-      target = getAzimuthAndElevation(cmd, jdNow);
-  }
-
-  gimbal.run();
-
-
-
-
-
-
-/*
-  if (cmd != ""){
-    switch (cmd[0]) {
-    case 'u':
-    case 'd':
-    case 'l':
-    case 'r':
-    case 'x':
-      
-        switch (cmd[i]) {
+  if (cmd.length()>0) {
+    for (int i=0;i<cmd.length();i++) {
+      isCommand = true;
+      switch (cmd[i]) {
+        case 'u':
+          gimbal.moveUp(5);
+          break;
         case 'd':
-          
+          gimbal.moveDown(5);
           break;
-        
+        case 'r':
+          gimbal.moveRight(5);
+          break;
+        case 'l':
+          gimbal.moveLeft(5);
+          break;
+        case 'x':
+          gimbal.setOrigin();
+          break;
         default:
-          break;
-        }
-        if (cmd[i]=='u') gimbal.moveUp(5);
-        else if (cmd[i]=='d') gimbal.moveDown(5);
-        else if (cmd[i]=='r') gimbal.moveRight(5);
-        else if (cmd[i]=='l') gimbal.moveLeft(5);
-        else if (cmd[i]=='x') gimbal.setOrigin();
+          isCommand = false;
       }
-      break;
-    
-    default:
-      break;
+      if (!isCommand) break;
     }
-
-
-    if (cmd[0]=='s') {
-      for (int i=0;i<cmd.length();i++) {
-        if (cmd[i]=='u') gimbal.moveUp(5);
-        else if (cmd[i]=='d') gimbal.moveDown(5);
-        else if (cmd[i]=='r') gimbal.moveRight(5);
-        else if (cmd[i]=='l') gimbal.moveLeft(5);
-        else if (cmd[i]=='x') gimbal.setOrigin();
-      }
-
-
-      elevationTargetPosition = elevation.targetPosition();
-      azimuthTargetPosition = azimuth.targetPosition();
-      
-      for (int i=0;i<cmd.length();i++) {
-        if (cmd[i]=='u') elevationTargetPosition += 56.88889;
-        else if (cmd[i]=='d') elevationTargetPosition -=56.88889;
-        else if (cmd[i]=='r') azimuthTargetPosition +=56.88889;
-        else if (cmd[i]=='l') azimuthTargetPosition -=56.88889;
-        else if (cmd[i]=='x') {
-          azimuth.setCurrentPosition(0);
-          elevation.setCurrentPosition(0);
-          azimuth.moveTo(0);
-          elevation.moveTo(0);
-        }
-      }
-
-      elevation.moveTo(elevationTargetPosition);
-      azimuth.moveTo(azimuthTargetPosition);
-    
-      while (elevation.distanceToGo()!=0 || azimuth.distanceToGo()!=0) {
-        elevation.run();
-        azimuth.run();
-      }
-    }
-    else {
+  
+    if (!isCommand) {
       long jdNow = (float)epochToJulian((float)(millis()-startupMillis)/1000+startupTime);
-      target = getAzimuthAndElevation(cmd, jdNow);
+        target = getAzimuthAndElevation(cmd, jdNow);
+        gimbal.azimuthTo(target.azimuth);
+        gimbal.elevationTo(target.elevation);
+        Serial.print("Moving to azimuth ");
+        Serial.print(target.azimuth);
+        Serial.print(" elevation: ");
+        Serial.println(target.elevation);
     }
-    
   }
-  cmd = "";
-*/
+  gimbal.run();
 }

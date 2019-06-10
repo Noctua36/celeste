@@ -37,8 +37,8 @@ position getAzimuthAndElevation(String id, float julianDate) {
   url += String(julianDate);
   url += "&SKIP_DAYLT=NO";
   
-  Serial.print("requesting URL: ");
-  Serial.println(url);
+  //Serial.print("requesting URL: ");
+  //Serial.println(url);
 
   client.print(String("GET ") + url + " HTTP/1.1\r\n" +
                "Host: " + host + "\r\n" +
