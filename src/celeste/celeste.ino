@@ -11,6 +11,7 @@
 #endif
 
 String cmd;
+position target;
 
 boolean newData = false;
 
@@ -64,6 +65,8 @@ void loop() {
   }
   
   if (cmd != ""){
+    long jdNow = (float)epochToJulian((float)(millis()-startupMillis)/1000+startupTime);
+    target = getAzimuthAndElevation(cmd, jdNow);
     /*//if (cmd[0]=='s') {
       elevationTargetPosition = elevation.targetPosition();
       azimuthTargetPosition = azimuth.targetPosition();

@@ -76,5 +76,5 @@ void sendNTPpacket(IPAddress& address) {
 }
 
 double epochToJulian(long epoch) {
-  return (epoch/86400.0)+2440587.5;
+  return ((double)epoch/86400.0)+2440587.5;
 }

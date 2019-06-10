@@ -31,7 +31,12 @@ position getAzimuthAndElevation(String id, float julianDate) {
     Serial.println("certificate doesn't match");
   }
 
-  String url = "/horizons_batch.cgi?batch=1&TABLE_TYPE=OBSERVER&QUANTITIES='4'&COMMAND=\"301\"&SOLAR_ELONG=\"0,180\"&LHA_CUTOFF=0&CSV_FORMAT=YES&CAL_FORMAT=CAL&ANG_FORMAT=DEG&APPARENT=REFRACTED&REF_SYSTEM=J2000&CENTER=coord@399&COORD_TYPE=GEODETIC&SITE_COORD='-44.016950,-19.875750,0.818000'&TLIST=2458644.36954&SKIP_DAYLT=NO";
+  String url = "/horizons_batch.cgi?batch=1&TABLE_TYPE=OBSERVER&QUANTITIES='4'&COMMAND=\"";
+  url += id;
+  url += "\"&SOLAR_ELONG=\"0,180\"&LHA_CUTOFF=0&CSV_FORMAT=YES&CAL_FORMAT=CAL&ANG_FORMAT=DEG&APPARENT=REFRACTED&REF_SYSTEM=J2000&CENTER=coord@399&COORD_TYPE=GEODETIC&SITE_COORD='-44.016950,-19.875750,0.818000'&TLIST=";
+  url += String(julianDate);
+  url += "&SKIP_DAYLT=NO";
+  
   Serial.print("requesting URL: ");
   Serial.println(url);
 
@@ -54,16 +59,38 @@ position getAzimuthAndElevation(String id, float julianDate) {
  
   Serial.println("reply was:");
   Serial.println("==========");
-  String line;
-  while(client.available() && line != "$$SOE"){        
+  String line, data;
+  while (client.available() && line != "$$SOE"){        
     line = client.readStringUntil('\n');  //Read Line by Line
     //Serial.println(line); //Print response
   }
-  line = client.readStringUntil('\n');  //Read Line by Line
+  while (client.available()){
+    line = client.readStringUntil('\n');  //Read Line by Line
+    if (line == "$$EOE") break;
+    data += line;  
+  }
   client.stop();
-  Serial.println(line);
+  
+  int commas = 0;
+  for (int i = 0; i < data.length(); i++) {
+    if (data.substring(i, i+1) == ",") {
+      commas++;
+      if (commas == 3) {
+        pos.azimuth = data.substring(i+1).toFloat();
+      }
+      if (commas == 4) {
+        pos.elevation = data.substring(i+1).toFloat();
+        break;
+      }
+    }
+  }
+  
+  Serial.print("Azimuth: ");
+  Serial.println(pos.azimuth);
+  Serial.print("Elevation: ");
+  Serial.println(pos.elevation);
+
   Serial.println("==========");
-  Serial.println("closing connection");
   
   return pos;
 }
