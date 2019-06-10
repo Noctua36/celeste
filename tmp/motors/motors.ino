@@ -43,6 +43,13 @@ void loop(){
     else if (cmd[i]=='d') elevationTargetPosition -=56.88889;
     else if (cmd[i]=='r') azimuthTargetPosition +=56.88889;
     else if (cmd[i]=='l') azimuthTargetPosition -=56.88889;
+    else if (cmd[i]=='x') {
+      azimuth.setCurrentPosition(0);
+      elevation.setCurrentPosition(0);
+      azimuth.moveTo(0);
+      elevation.moveTo(0);
+
+    }
   }
   elevation.moveTo(elevationTargetPosition);
   azimuth.moveTo(azimuthTargetPosition);
@@ -52,37 +59,4 @@ void loop(){
     azimuth.run();
   }
 
-  
-//    
-//    {
-//    Serial.print("u");
-//    if (elevation.distanceToGo() == 0){
-//      elevation.move(56.89);
-//    }
-//  } else if (cmd.equals("d")) {
-//    Serial.print("d");
-//    if (elevation.distanceToGo() == 0){
-//      elevation.move(-56.89);
-//    }
-//  } else if (cmd.equals("r")) {
-//    Serial.print("r");
-//    if (azimuth.distanceToGo() == 0){
-//      azimuth.move(56.89);
-//    }
-//  } else if (cmd.equals("l")) {
-//    Serial.print("l");
-//    if (azimuth.distanceToGo() == 0){
-//      azimuth.move(-56.89);
-//    }
-//  }
-//  }
-//
-//  
-////  Serial.print("Command received: ");
-// if (!cmd.equals("")) Serial.println(cmd);
-//  
-//  cmd = "";
-  azimuth.run();
-  elevation.run();
-//  delay(100);
 }
