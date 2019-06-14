@@ -1,4 +1,4 @@
-// v1.0.0
+// v1.0.1
 // aponta para objeto através do código NAIF recebido pela serial
 
 #include "Arduino.h"
