@@ -1,3 +1,6 @@
+// v1.0.0
+// aponta para objeto através do código NAIF recebido pela serial
+
 #include "Arduino.h"
 #include <ESP8266WiFi.h>
 #include "ntp.h"
