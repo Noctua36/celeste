@@ -34,7 +34,7 @@ position getAzimuthAndElevation(String id, double julianDate) {
   String url = "/horizons_batch.cgi?batch=1&TABLE_TYPE=OBSERVER&QUANTITIES='4'&COMMAND=\"";
   url += id;
   url += "\"&SOLAR_ELONG=\"0,180\"&LHA_CUTOFF=0&CSV_FORMAT=YES&CAL_FORMAT=CAL&ANG_FORMAT=DEG&APPARENT=REFRACTED&REF_SYSTEM=J2000&CENTER=coord@399&COORD_TYPE=GEODETIC&SITE_COORD='-44.016950,-19.875750,0.818000'&TLIST=";
-  url += String(julianDate);
+  url += String(julianDate, 6);
   url += "&SKIP_DAYLT=NO";
   
   //Serial.print("requesting URL: ");

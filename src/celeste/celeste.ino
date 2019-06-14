@@ -1,4 +1,4 @@
-// v1.0.0
+// v1.0.1
 // aponta para objeto através do código NAIF recebido pela serial
 
 #include "Arduino.h"
@@ -137,7 +137,7 @@ void loop() {
       double jdNow = epochToJulian(epochNow);
       target = getAzimuthAndElevation(cmd, jdNow);
       //if (target.azimuth>180) target.azimuth-=360;
-      azimuth.moveTo(target.azimuth*STEPS_PER_DEGREE);
+      azimuth.moveTo((target.azimuth > 180 ? target.azimuth-360: target.azimuth)*STEPS_PER_DEGREE);
       elevation.moveTo(-target.elevation*STEPS_PER_DEGREE);
       Serial.print("Moving to azimuth ");
       Serial.print(target.azimuth);
