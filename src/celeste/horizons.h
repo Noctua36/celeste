@@ -13,6 +13,6 @@ typedef struct {
 } position;
 
 
-position getAzimuthAndElevation(String id, double julianDate);
+position getAzimuthAndElevation(String id, double latitude, double longitude, double altitude, double julianDate);
 
 #endif /* HORIZONS_H */
