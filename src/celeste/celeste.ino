@@ -3,17 +3,10 @@
 
 #include "Arduino.h"
 #include <ESP8266WiFi.h>
+#include "config.h"
 #include "ntp.h"
-//#include "gimbal.h"
 #include "AccelStepper.h"
 #include "horizons.h"
-
-#define STEPS_PER_DEGREE 11.3777777777
-
-#ifndef STASSID
-#define STASSID "gm"
-#define STAPSK  "cocacola"
-#endif
 
 String cmd;
 position target;
@@ -121,9 +114,6 @@ void loop() {
         case 'x':
           elevation.setCurrentPosition(0);
           azimuth.setCurrentPosition(0);
-          //elevationTarget = 0;
-          //elevation.moveTo(0);
-          //azimuth.moveTo(0);
           break;
         default:
           isCommand = false;
@@ -135,8 +125,7 @@ void loop() {
       
       double epochNow = ((double)(millis()-startupMillis))/1000+startupTime;
       double jdNow = epochToJulian(epochNow);
-      target = getAzimuthAndElevation(cmd, jdNow);
-      //if (target.azimuth>180) target.azimuth-=360;
+      target = getAzimuthAndElevation(cmd, LATITUDE, LONGITUDE, ALTITUDE, jdNow);
       azimuth.moveTo((target.azimuth > 180 ? target.azimuth-360: target.azimuth)*STEPS_PER_DEGREE);
       elevation.moveTo(-target.elevation*STEPS_PER_DEGREE);
       Serial.print("Moving to azimuth ");
@@ -147,14 +136,10 @@ void loop() {
     else {
       azimuth.move(azimuthTarget);
       elevation.move(-elevationTarget);
-//    elevation.setCurrentPosition(0);
-//    azimuth.setCurrentPosition(0);
     }
   }
   
-  //while (azimuth.distanceToGo()!=0 || elevation.distanceToGo()!=0) {
-    azimuth.run();
-    elevation.run();
-  //}
-  
+  azimuth.run();
+  elevation.run();
+ 
 }

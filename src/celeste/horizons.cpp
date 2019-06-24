@@ -8,7 +8,7 @@ const char fingerprint[] PROGMEM = "C6 5D 37 E8 98 69 12 6A 0B 85 B4 53 A9 4B C9
 
 WiFiClientSecure client;
 
-position getAzimuthAndElevation(String id, double julianDate) {
+position getAzimuthAndElevation(String id, double latitude, double longitude, double altitude, double julianDate) {
   position pos;
   pos.azimuth = 0;
   pos.elevation = 0;
@@ -33,7 +33,13 @@ position getAzimuthAndElevation(String id, double julianDate) {
 
   String url = "/horizons_batch.cgi?batch=1&TABLE_TYPE=OBSERVER&QUANTITIES='4'&COMMAND=\"";
   url += id;
-  url += "\"&SOLAR_ELONG=\"0,180\"&LHA_CUTOFF=0&CSV_FORMAT=YES&CAL_FORMAT=CAL&ANG_FORMAT=DEG&APPARENT=REFRACTED&REF_SYSTEM=J2000&CENTER=coord@399&COORD_TYPE=GEODETIC&SITE_COORD='-44.016950,-19.875750,0.818000'&TLIST=";
+  url += "\"&SOLAR_ELONG=\"0,180\"&LHA_CUTOFF=0&CSV_FORMAT=YES&CAL_FORMAT=CAL&ANG_FORMAT=DEG&APPARENT=REFRACTED&REF_SYSTEM=J2000&CENTER=coord@399&COORD_TYPE=GEODETIC&SITE_COORD='";
+  url += String(latitude, 6);
+  url += ",";
+  url += String(longitude, 6);
+  url += ",";
+  url += String(altitude, 6);
+  url +="'&TLIST=";
   url += String(julianDate, 6);
   url += "&SKIP_DAYLT=NO";
   
